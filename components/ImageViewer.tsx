@@ -4,9 +4,11 @@ import { Tagged } from "type-fest";
 
 type LocalImageAsset = Tagged<string, "LocalImageAsset">;
 
-export function ImageViewer(props: {
+type ImageViewerProps = {
     imgSource: LocalImageAsset | { uri: string };
-}) {
+};
+
+export function ImageViewer(props: ImageViewerProps) {
     return <Image source={props.imgSource} style={styles.image} />
 }
 

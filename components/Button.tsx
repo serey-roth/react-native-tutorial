@@ -1,34 +1,38 @@
 import { Pressable, Text, View, StyleSheet, ViewStyle, TextStyle } from "react-native";
 
-export function Button(props: {
-    label: string,
-    onClick: () => void;
-    containerStyles?: ViewStyle[];
+type ButtonProps = {
+    label?: string,
+    onClick?: () => void;
+    wrapperStyles?: ViewStyle[];
     buttonStyles?: ViewStyle[];
     labelStyles?: TextStyle[];
     icon?: React.ReactElement;
-}) {
+}
+
+export function Button(props: ButtonProps) {
     return (
         <View style={[
-            styles.buttonContainer,
-            ...(props.containerStyles ?? []),
+            styles.wrapper,
+            ...(props.wrapperStyles ?? []),
         ]}>
             <Pressable onPress={props.onClick} style={[
                 styles.button,
                 ...(props.buttonStyles ?? []),
             ]}>
                 {props.icon}
-                <Text style={[
-                    styles.buttonLabel,
-                    ...(props.labelStyles ?? []),
-                ]}>{props.label}</Text>
+                {props.label && (
+                    <Text style={[
+                        styles.buttonLabel,
+                        ...(props.labelStyles ?? []),
+                    ]}>{props.label}</Text>
+                )}
             </Pressable>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    buttonContainer: {
+    wrapper: {
         width: 320,
         height: 68,
         marginHorizontal: 20,
