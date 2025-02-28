@@ -1,14 +1,14 @@
-import { Link } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
-import { Image, ImageSource } from "expo-image";
-import { ImageViewer } from "@/components/ImageViewer";
 import { Button } from "@/components/Button";
+import { EmojiList } from "@/components/EmojiList";
+import { EmojiPicker } from "@/components/EmojiPicker";
+import { EmojiSticker } from "@/components/EmojiSticker";
+import { ImageViewer } from "@/components/ImageViewer";
 import { FontAwesome } from "@expo/vector-icons";
+import { ImageSource } from "expo-image";
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
-import { EmojiPicker } from "@/components/EmojiPicker";
-import { EmojiList } from "@/components/EmojiList";
-import { EmojiSticker } from "@/components/EmojiSticker";
+import { StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const PlaceholderImage = require('@/assets/images/background-image.png');
 
@@ -39,52 +39,54 @@ export default function Index() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageViewer imgSource={selectedImage ?? PlaceholderImage} />
-        {selectedEmoji && <EmojiSticker imageSize={40} imgSource={selectedEmoji} />}
-      </View>
-      {showAppOptions ? (
-        <View style={styles.optionsContainer}>
-          <View style={styles.optionsRow}>
-            <Button 
-              label="Reset" 
-              icon={<FontAwesome name='undo' size={16}  color='#fff' style={styles.resetButtonIcon} />} 
-              onClick={() => setShowAppOptions(false)} 
-              wrapperStyles={[styles.resetButtonWrapper]}
-              buttonStyles={[styles.resetButton]} />
-            <Button 
-              icon={<FontAwesome name='plus' size={38}  color='#25292e' />} 
-              onClick={() => setisEmojiPickerVisible(true)} 
-              wrapperStyles={[styles.addEmojiButtonWrapper]} 
-              buttonStyles={[styles.addEmojiButton]}
-              />
-            <Button 
-              icon={<FontAwesome name='download' size={16}  color='#fff' />} 
-              label="Save" 
-              onClick={() => {}}
-              wrapperStyles={[styles.saveButtonWrapper]}
-              buttonStyles={[styles.saveButton]} />
+    <GestureHandlerRootView>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <ImageViewer imgSource={selectedImage ?? PlaceholderImage} />
+          {selectedEmoji && <EmojiSticker imageSize={40} imgSource={selectedEmoji} />}
+        </View>
+        {showAppOptions ? (
+          <View style={styles.optionsContainer}>
+            <View style={styles.optionsRow}>
+              <Button 
+                label="Reset" 
+                icon={<FontAwesome name='undo' size={16}  color='#fff' style={styles.resetButtonIcon} />} 
+                onClick={() => setShowAppOptions(false)} 
+                wrapperStyles={[styles.resetButtonWrapper]}
+                buttonStyles={[styles.resetButton]} />
+              <Button 
+                icon={<FontAwesome name='plus' size={38}  color='#25292e' />} 
+                onClick={() => setisEmojiPickerVisible(true)} 
+                wrapperStyles={[styles.addEmojiButtonWrapper]} 
+                buttonStyles={[styles.addEmojiButton]}
+                />
+              <Button 
+                icon={<FontAwesome name='download' size={16}  color='#fff' />} 
+                label="Save" 
+                onClick={() => {}}
+                wrapperStyles={[styles.saveButtonWrapper]}
+                buttonStyles={[styles.saveButton]} />
+            </View>
           </View>
-        </View>
-      ) : (
-        <View style={styles.footerContainer}>
-          <Button 
-            label="Choose a photo" 
-            onClick={pickImageAsync} 
-            icon={<FontAwesome name="picture-o" size={18} color="#25292e" />}
-            wrapperStyles={[styles.choosePhotoButtonWrapper]}
-            buttonStyles={[styles.choosePhotoButton]} 
-            labelStyles={[styles.choosePhotoButtonLabel]} />
-          <Button label="Use this photo" onClick={() => setShowAppOptions(true)} />
-        </View>
-    )}
-    {isEmojiPickerVisible && (
-      <EmojiPicker isVisible={isEmojiPickerVisible} onClose={handleModalClose}>
-        <EmojiList onSelect={setSelectedEmoji} onClose={handleModalClose}/>
-      </EmojiPicker>
-    )}
-    </View>
+        ) : (
+          <View style={styles.footerContainer}>
+            <Button 
+              label="Choose a photo" 
+              onClick={pickImageAsync} 
+              icon={<FontAwesome name="picture-o" size={18} color="#25292e" />}
+              wrapperStyles={[styles.choosePhotoButtonWrapper]}
+              buttonStyles={[styles.choosePhotoButton]} 
+              labelStyles={[styles.choosePhotoButtonLabel]} />
+            <Button label="Use this photo" onClick={() => setShowAppOptions(true)} />
+          </View>
+      )}
+      {isEmojiPickerVisible && (
+        <EmojiPicker isVisible={isEmojiPickerVisible} onClose={handleModalClose}>
+          <EmojiList onSelect={setSelectedEmoji} onClose={handleModalClose}/>
+        </EmojiPicker>
+      )}
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
