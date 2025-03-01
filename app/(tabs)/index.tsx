@@ -3,6 +3,8 @@ import { EmojiList } from "@/components/EmojiList";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { EmojiSticker } from "@/components/EmojiSticker";
 import { ImageViewer } from "@/components/ImageViewer";
+import { useAppPermission } from "@/hooks/usePermission";
+import { useSaveImage } from "@/hooks/useSaveImage";
 import { FontAwesome } from "@expo/vector-icons";
 import { ImageSource } from "expo-image";
 import * as ImagePicker from 'expo-image-picker';
@@ -13,6 +15,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const PlaceholderImage = require('@/assets/images/background-image.png');
 
 export default function Index() {
+  useAppPermission();
+
+  const { imageContainerRef, saveImage } = useSaveImage();
+
   const [selectedImage, setSelectedImage] = useState<{
     uri: string;
   } | null>(null);
@@ -42,8 +48,10 @@ export default function Index() {
     <GestureHandlerRootView>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <ImageViewer imgSource={selectedImage ?? PlaceholderImage} />
-          {selectedEmoji && <EmojiSticker imageSize={40} imgSource={selectedEmoji} />}
+          <View ref={imageContainerRef} collapsable={false}>
+            <ImageViewer imgSource={selectedImage ?? PlaceholderImage} />
+            {selectedEmoji && <EmojiSticker imageSize={40} imgSource={selectedEmoji} />}
+          </View>
         </View>
         {showAppOptions ? (
           <View style={styles.optionsContainer}>
@@ -63,7 +71,7 @@ export default function Index() {
               <Button 
                 icon={<FontAwesome name='download' size={16}  color='#fff' />} 
                 label="Save" 
-                onClick={() => {}}
+                onClick={saveImage}
                 wrapperStyles={[styles.saveButtonWrapper]}
                 buttonStyles={[styles.saveButton]} />
             </View>
@@ -89,6 +97,7 @@ export default function Index() {
     </GestureHandlerRootView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
