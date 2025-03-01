@@ -17,7 +17,7 @@ const PlaceholderImage = require('@/assets/images/background-image.png');
 export default function Index() {
   useAppPermission();
 
-  const { imageContainerRef, saveImage } = useSaveImage();
+  const { imageRef, saveImage } = useSaveImage();
 
   const [selectedImage, setSelectedImage] = useState<{
     uri: string;
@@ -48,7 +48,7 @@ export default function Index() {
     <GestureHandlerRootView>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <View ref={imageContainerRef} collapsable={false}>
+          <View ref={imageRef} collapsable={false}>
             <ImageViewer imgSource={selectedImage ?? PlaceholderImage} />
             {selectedEmoji && <EmojiSticker imageSize={40} imgSource={selectedEmoji} />}
           </View>
